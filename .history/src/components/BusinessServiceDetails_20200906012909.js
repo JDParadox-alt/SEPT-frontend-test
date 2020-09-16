@@ -1,0 +1,213 @@
+import React, { Component } from 'react';
+
+export default class BusinessServiceDetails extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            found: "loading",
+            id: 0,
+            name: "",
+            business: {},
+            description: "",
+            workingHours: [],
+            serviceDays: [],
+            startHour: "",
+            startMin: "",
+            endHour: "",
+            endMin: "",
+            employees: [],
+            bookings: []
+        }
+    }
+
+    getBusinessServiceDetails() {
+        console.log(this.props.match.params.id)
+        fetch(`http://localhost:8080/api/businessServices/${this.props.match.params.id}`)
+            .then(res => {
+                if (res.ok) {
+                    this.setState({ found: "found" })
+                    return res.json()
+                }
+                else {
+                    console.log(res.ok + " | Shite. It's fucked. Check your URL params?")
+                    this.setState({ found: "notFound" })
+                }
+            })
+            .then(json => {
+                if (this.state.found === "found") {
+                    console.log(json)
+                    this.setState({ id: json.id })
+                    this.setState({ name: json.name })
+                    this.setState({ business: json.business })
+                    this.setState({ description: json.description })
+                    this.setState({ workingHours: json.workingHours })
+                    this.setState({ serviceDays: json.workingHours.days})
+                    this.setState({ startHour: json.workingHours[0].startTime.slice(0,2)})
+                    this.setState({ startMin: json.workingHours[0].startTime.slice(3,5)})
+                    this.setState({ endHour: json.workingHours[0].endTime.slice(0,2)})
+                    this.setState({ endMin: json.workingHours[0].endTime.slice(3,5)})
+                    this.setState({ employees: json.employees })
+                    this.setState({ bookings: json.bookings })
+                    console.log(this.state)
+                }
+            })
+    }
+    componentDidMount() {
+        this.getBusinessServiceDetails()
+    }
+    render() {
+        const render_businessService = () => {
+            if (this.state.found === "loading") {
+                return (
+                    <div className="container emp-profile" style={{ textAlign: 'center' }}>
+                        <h3>The page is still loading.</h3>
+                    </div>
+                )
+            }
+            else if (this.state.found === "notFound") {
+                return (
+                    <div className="container emp-profile" style={{ textAlign: 'center' }}>
+                        <h3>An error occured while loading the page. Please try again.</h3>
+                    </div>
+                )
+            }
+            else {
+                return (
+                    //     <div className="container emp-profile">
+                    //         <div className="row">
+                    //             <div className="col-md-3">
+                    //                 <div className="profile-img">
+                    //                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                    //                     {/* <div className="file btn btn-lg btn-primary">
+                    //                         Change Photo
+                    //                                 <input type="file" name="file" />
+                    //                     </div> */}
+                    //                 </div>
+                    //             </div>
+                    //             <div className="col-md-8">
+                    //                 <div className="profile-head">
+                    //                     <h5>{this.state.business.name}</h5>
+                    //                     <h6 style={{ color: "black" }}>{this.state.name}</h6>
+                    //                     <ul className="nav nav-tabs" id="myTab" role="tablist">
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link active" id="desc-tab" data-toggle="tab" href="#desc" role="tab" aria-controls="desc" aria-selected="true">Description</a>
+                    //                         </li>
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link" id="wh-tab" data-toggle="tab" href="#wh" role="tab" aria-controls="wh" aria-selected="false">Working Hours</a>
+                    //                         </li>
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link" id="employees-tab" data-toggle="tab" href="#employees" role="tab" aria-controls="employees" aria-selected="false">Employees</a>
+                    //                         </li>
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link" id="bookings-tab" data-toggle="tab" href="#bookings" role="tab" aria-controls="bookings" aria-selected="false">Bookings</a>
+                    //                         </li>
+                    //                     </ul>
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //         <div className="row">
+                    //             <div className="col-md-3" />
+                    //             <div className="col-md-9">
+                    //                 <div className="tab-content profile-tab" id="myTabContent">
+                    //                     <div className="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="desc-tab" >
+                    //                         <div className="row">
+                    //                             <label>{this.state.description}</label>
+                    //                         </div>
+                    //                     </div>
+                    //                     <div className="tab-pane fade" id="wh" role="tabpanel" aria-labelledby="wh-tab">
+                    //                         <div className="row">
+                    //                             <p>Array ception give me a while to figure this out k thx</p>
+                    //                         </div>
+                    //                     </div>
+                    //                     <div className="tab-pane fade" id="employees" role="tabpanel" aria-labelledby="employees-tab">
+                    //                         <div className="row">
+                    //                             <div >
+                    //                                 {this.state.employees.map((employee) =>
+                    //                                     <label key={employee.id}>
+                    //                                         <label scope="row">{employee}</label>
+                    //                                     </label>
+                    //                                 )}
+                    //                             </div>
+                    //                         </div>
+                    //                     </div>
+                    //                     <div className="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
+                    //                         <div className="row">
+                    //                             <p>Okay how the fuck do you display time shit</p>
+                    //                         </div>
+                    //                     </div>
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     </div>
+                    <div className="container-fluid profile-container-bg py-3">
+                        <div className="row">
+                            <div className="col-1"></div>
+                            <div className="col-10">
+                                <div className="card my-3">
+                                    <h3 className="mt-3 ml-3">{this.state.business.name} - {this.state.name}</h3>
+                                    {/* <h4 className="ml-3">{this.state.name}</h4> */}
+                                    <div className="card-body">
+                                        <div className="card my-3">
+                                            <div className="card-body">
+                                                <table className="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Description</th>
+                                                            <th scope="col">ID/BusinessID</th>
+                                                            <th scope="col">From</th>
+                                                            <th scope="col">To</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{this.state.description}</td>
+                                                            <td>{this.state.id}/{this.state.business.id}</td>
+                                                            <td>{this.state.workingHours.startTime}</td>
+                                                            <td>{this.state.workingHours.endTime}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <h5>Available On</h5>
+                                                {/* <div className="row mb-3">{this.state.workingHours.days.length > 0 && this.state.workingHours.days.map((d, v) => {
+                                                    return (
+                                                        <div className="col-2 text-left" key={v}>{d}</div>
+                                                    )
+                                                })}</div> */}
+                                                <h5>Available Staff</h5>
+                                                <div className="row mb-3">
+                                                    {this.state.employees.length > 0 && this.state.employees.map((e, n) => {
+                                                        return (
+                                                            <div className="col-2" key={n}>{e}</div>
+                                                        )
+                                                    })}
+                                                </div>
+                                                <h5>Booked Appointments</h5>
+                                                <div className="row">
+                                                    {this.state.bookings.length > 0 && this.state.bookings.map((b, m) => {
+                                                        return (
+                                                            <div className="col-1" key={m}>{b.id}</div>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-1"></div>
+                        </div>
+                    </div>
+                )
+            }
+        }
+
+        return (
+            <div>
+                {this.props.auth.isAuthenticated && this.props.auth.user ? <div className="container-fluid profile-container-bg py-3">
+                    {render_businessService()}
+                </div> : null}
+            </div>
+        )
+    }
+
+}
