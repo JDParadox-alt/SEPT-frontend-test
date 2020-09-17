@@ -299,35 +299,80 @@ export default class ServiceList extends Component {
         this.setState({ endMin1: event.target.value })
     }
     createService(event){
-        var checkValidSum=0
-        if(this.state.businessProfileExists){
-            checkValidSum++
+        var invalid=false
+        var errorMsg = ''
+        if(!this.state.businessProfileExists){
+            invalid = true
+            errorMsg = errorMsg + 'You do not even have a business profile. How did you even get here?\n'
         }
-        if(this.state.serviceName){
-            checkValidSum++
+        if(!this.state.serviceName){
+            invalid = true
+            errorMsg = errorMsg + 'Service name cannot be empty\n'
         }
-        if(this.state.serviceDescription){
-            checkValidSum++
+        if(!this.state.serviceDescription){
+            invalid = true
+            errorMsg = errorMsg + 'Service description cannot be empty\n'
         }
-        if(this.state.serviceEmployees.length>0){
-            checkValidSum++
+        if(!this.state.serviceEmployees.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'Employee list cannot be empty\n'
         }
-        if(this.state.serviceDays.length>0){
-            checkValidSum++
+        if(!this.state.serviceDays.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'At least one working day is required\n'
         }
-        if(this.state.startHour && this.state.startHour<=this.state.endHour && this.state.startMin){
-            checkValidSum++
+        if(!this.state.startHour || !this.state.startMin){
+            invalid = true
+            errorMsg = errorMsg + 'Start time cannot be empty\n'
         }
-        if(this.state.endHour && this.state.endHour>=this.state.startHour && this.state.endMin){
-            checkValidSum++
+        if(this.state.startHour < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be less than 0\n'
         }
-        if(this.state.startHour===this.state.endHour){
+        if(this.state.startHour > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be higher than 24\n'
+        }
+        if(this.state.endHour < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be less than 0\n'
+        }
+        if(this.state.endHour > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be higher than 24\n'
+        }
+        if(this.state.startMin < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be less than 0\n'
+        }
+        if(this.state.startMin > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be higher than 59\n'
+        }
+        if(this.state.endMin < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be less than 0\n'
+        }
+        if(this.state.endMin > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be higher than 59\n'
+        }
+        if(!this.state.endHour || !this.state.endMin){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be empty\n'
+        }
+        if(this.state.endHour<this.state.startHour){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
+        }
+        else if(this.state.startHour===this.state.endHour){
             if((this.state.endMin-this.state.startMin)<0){
-                checkValidSum=checkValidSum-1
+                invalid = true
+                errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
             }
         }
-        if(checkValidSum!==7){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
+        if(invalid){
+            alert(errorMsg)
             event.preventDefault();
         } else {
             var new_obj_1 = {
@@ -367,32 +412,76 @@ export default class ServiceList extends Component {
         }
     }
     updateBusinessService(event, id){
-        var checkValidSum=0
-        if(this.state.serviceName1){
-            checkValidSum++
+        var invalid=false
+        var errorMsg = ''
+        if(!this.state.serviceName1){
+            invalid = true
+            errorMsg = errorMsg + 'Service name cannot be empty\n'
         }
-        if(this.state.serviceDescription1){
-            checkValidSum++
+        if(!this.state.serviceDescription1){
+            invalid = true
+            errorMsg = errorMsg + 'Service description cannot be empty\n'
         }
-        if(this.state.serviceEmployees1.length>0){
-            checkValidSum++
+        if(!this.state.serviceEmployees1.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'Employee list cannot be empty\n'
         }
-        if(this.state.serviceDays1.length>0){
-            checkValidSum++
+        if(!this.state.serviceDays1.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'At least one working day is required\n'
         }
-        if(this.state.startHour1 && this.state.startHour1<=this.state.endHour1 && this.state.startMin1){
-            checkValidSum++
+        if(!this.state.startHour1 || !this.state.startMin1){
+            invalid = true
+            errorMsg = errorMsg + 'Start time cannot be empty\n'
         }
-        if(this.state.endHour1 && this.state.endHour1>=this.state.startHour1 && this.state.endMin1){
-            checkValidSum++
+        if(this.state.startHour1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be less than 0\n'
         }
-        if(this.state.startHour1===this.state.endHour1){
+        if(this.state.startHour1 > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be higher than 24\n'
+        }
+        if(this.state.endHour1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be less than 0\n'
+        }
+        if(this.state.endHour1 > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be higher than 24\n'
+        }
+        if(this.state.startMin1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be less than 0\n'
+        }
+        if(this.state.startMin1 > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be higher than 59\n'
+        }
+        if(this.state.endMin1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be less than 0\n'
+        }
+        if(this.state.endMin1 > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be higher than 59\n'
+        }
+        if(!this.state.endHour1 || !this.state.endMin1){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be empty\n'
+        }
+        if(this.state.endHour1<this.state.startHour1){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
+        }
+        else if(this.state.startHour1===this.state.endHour1){
             if((this.state.endMin1-this.state.startMin1)<0){
-                checkValidSum=checkValidSum-1
+                invalid = true
+                errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
             }
         }
-        if(checkValidSum!==6){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
+        if(invalid){
+            alert(errorMsg)
             event.preventDefault();
         } else {
             var new_obj_1 = {
@@ -584,7 +673,7 @@ export default class ServiceList extends Component {
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
             event.preventDefault();
         } else {
-            var status1="available"
+            var status1="Unseen"
             var new_obj_1 = {
                 businessService: {id: businessServiceId},
                 startDateTime: String(this.state.date),
@@ -630,6 +719,59 @@ export default class ServiceList extends Component {
         console.log("Updated!!!")
     }
     render() {
+
+        const render_bookingForm = (sv) => {
+            return (
+                <Modal show={this.state.show2 === sv.id} onHide={()=>this.handleClose2(sv.id)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Booking Form</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={(event)=>this.createBooking(event, sv.id, sv)}>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputa1">Notes</label>
+                            <input value={this.state.bookingNotes} onChange={this.handleBookingNotes.bind(this)} type="text" className="form-control" id="exampleInputa1" placeholder="Enter notes" />
+                        </div>
+                        <div className="row">
+                            <div className="col-10">
+                                <div className="form-group">
+                                    <label>Allow Notification</label>
+                                    <div>
+                                        <div className="form-check form-check-inline">
+                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox10a" onChange={this.onChangeCheckboxNotify.bind(this)} defaultChecked={false} value="true" />
+                                            <label className="form-check-label" htmlFor="inlineCheckbox10a">Send you a reminder</label>
+                                        </div>                                                                                                                                                           
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label>From:</label>
+                                    <DateTimePicker
+                                        value={this.state.date}
+                                        onChange={this.onChangeDate}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>To:</label>
+                                    <DateTimePicker
+                                        value={this.state.date1}
+                                        onChange={this.onChangeDate1}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-2"></div>
+                        </div>
+                        <button type="submit" className="btn btn-primary float-right">Submit</button>
+                    </form>                                                     
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            )
+        }
+
         return(
             <div className="container-fluid profile-container-bg py-3">
                 <div className="row">
@@ -704,58 +846,7 @@ export default class ServiceList extends Component {
                                                     </ReactTooltip>
                                                     </Fragment>
                                                     }
-                                                    {/* <Button variant="primary float-right" onClick={(i)=>{
-                                                        this.handleShow2()
-                                                    }}>
-                                                        Book
-                                                    </Button> */}
-                                                    <Modal show={this.state.show2 === sv.id} onHide={()=>this.handleClose2(sv.id)}>
-                                                        <Modal.Header closeButton>
-                                                            <Modal.Title>Booking Form</Modal.Title>
-                                                        </Modal.Header>
-                                                        <Modal.Body>
-                                                            <form onSubmit={(event)=>this.createBooking(event, sv.id, sv)}>
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputa1">Notes</label>
-                                                                    <input value={this.state.bookingNotes} onChange={this.handleBookingNotes.bind(this)} type="text" className="form-control" id="exampleInputa1" placeholder="Enter notes" />
-                                                                </div>
-                                                                <div className="row">
-                                                                    <div className="col-10">
-                                                                        <div className="form-group">
-                                                                            <label>Allow Notification</label>
-                                                                            <div>
-                                                                                <div className="form-check form-check-inline">
-                                                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox10a" onChange={this.onChangeCheckboxNotify.bind(this)} defaultChecked={false} value="true" />
-                                                                                    <label className="form-check-label" htmlFor="inlineCheckbox10a">Send you a reminder</label>
-                                                                                </div>                                                                                                                                                           
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="form-group">
-                                                                            <label>From:</label>
-                                                                            <DateTimePicker
-                                                                                value={this.state.date}
-                                                                                onChange={this.onChangeDate}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="form-group">
-                                                                            <label>To:</label>
-                                                                            <DateTimePicker
-                                                                                value={this.state.date1}
-                                                                                onChange={this.onChangeDate1}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2"></div>
-                                                                </div>
-                                                                <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                            </form>                                                     
-                                                        </Modal.Body>
-                                                        <Modal.Footer>
-                                                            <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
-                                                                Close
-                                                            </Button>
-                                                        </Modal.Footer>
-                                                    </Modal>
+                                                    {render_bookingForm(sv)}
                                                 </div>
                                             </div>
                                         )

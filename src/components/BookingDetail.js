@@ -22,10 +22,11 @@ export default class BookingDetail extends Component {
     componentDidMount(){
         this.fetchDetails()
     }
+
     render() {
         return(
             <div className="container-fluid profile-container-bg py-3">
-                <div className="card">
+                <div className="container card">
                     <div className="card-body">
                         <table className="table">
                             <thead>
@@ -36,8 +37,14 @@ export default class BookingDetail extends Component {
                                 <th scope="col">Service Owner</th>
                                 <th scope="col">Start Time</th>
                                 <th scope="col">End Time</th>
-                                <th scope="col">Customer ID</th>
-                                <th scope="col">Customer Name</th>
+                                
+                                {this.state.details.customer? 
+                                <Fragment>
+                                    <th scope="col">Customer ID</th>
+                                    <th scope="col">Customer Name</th>
+                                </Fragment>
+                                : null}
+                                
                                 <th scope="col">Book Notes</th>
                                 <th scope="col">Send Reminder</th>
                                 <th scope="col">Book Status</th>
@@ -54,7 +61,7 @@ export default class BookingDetail extends Component {
                                     <td>{this.state.details.startDateTime}</td>
                                     <td>{this.state.details.endDateTime}</td>
                                     {this.state.details.customer&&<Fragment>
-                                        <td>{this.state.details.customer.id}</td>
+                                        <td>{this.state.details.customer.id} </td>
                                         <td>{this.state.details.customer.username}</td>
                                     </Fragment>}
                                     <td>{this.state.details.notes}</td>
@@ -64,6 +71,7 @@ export default class BookingDetail extends Component {
                                 }
                             </tbody>
                         </table>
+                        <a href={'/bookingeditform/'+this.state.details.id} className='btn btn-primary float-right'>Edit Booking</a>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
+import Icon from '@material-ui/core/Icon';
 
 const localizer = momentLocalizer(moment);
 
@@ -111,7 +114,12 @@ export default class BusinessServiceDetails extends Component {
                                             <label>Customer</label>
                                         </div>
                                         <div className="col-md-9">
-                                            <p>{booking.customer.id} | {booking.customer.username}</p>
+                                            {booking.customer != null? 
+                                                <p>{booking.customer.id} | {booking.customer.username}</p>
+                                            :
+                                                <p>This customer account not longer exists</p>
+                                            }
+                                            
                                         </div>
                                     </div>
                                     <div className="row">
@@ -138,8 +146,11 @@ export default class BusinessServiceDetails extends Component {
                                             <p>{booking.status}</p>
                                         </div>
                                     </div>
+                                    <a href={'/booking/'+booking.id} className='btn btn-primary float-right'>View details</a>
                                 </div>
+                                
                             </div>
+                            
                         )
                     })}
                 </div>
@@ -152,7 +163,13 @@ export default class BusinessServiceDetails extends Component {
             this.state.bookings.forEach((booking) => {
                 let bookStart = (new Date(booking.startDateTime))
                 let bookEnd = (new Date(booking.endDateTime))
-                let bookTitle = 'By ' + booking.customer.username + ' | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                let bookTitle = ''
+                if (booking.customer != null) {
+                    let bookTitle = 'By ' + booking.customer.username + ' | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                } else {
+                    let bookTitle = 'By NULL | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                }
+                
                 
                 serviceBookings.push({ id: booking.id, title: bookTitle, start: bookStart, end: bookEnd, color: '#1E90FF', resource: 'false', type: 'appointment', allDay: false })
             })

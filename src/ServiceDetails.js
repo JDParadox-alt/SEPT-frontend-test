@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-
-
-
-
-
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class ServiceDetails extends Component {
     constructor(props){
         super(props);
@@ -24,7 +21,7 @@ export default class ServiceDetails extends Component {
         window.scrollTo(0,0);
     }
     fetchData(){
-        const url=`localhost:8080/api/businessServices/${this.props.id}`;
+        const url=`${API_URL}/businessServices/${this.props.id}`;
         fetch(url)
             .then(res=>res.json())
             .then((json)=>this.setState({service: json}))
