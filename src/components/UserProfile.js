@@ -632,9 +632,9 @@ export default class UserProfile extends Component {
                                                                             View In Calendar
                                                                         </Link>
                                                                     </a>
-                                                                    <a className="dropdown-item" href="#">
+                                                                    {/* <a className="dropdown-item" href="#">
                                                                         <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
-                                                                    </a>
+                                                                    </a> */}
                                                                 </div>
                                                             </div>
                                                         </div>

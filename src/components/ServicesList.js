@@ -642,33 +642,42 @@ export default class ServiceList extends Component {
                 console.log(Math.ceil(Math.abs(endDate-startDate)/(1000 * 60 * 60 * 24)))
                 console.log(startDate-today)
                 console.log(Math.ceil(Math.abs(startDate-today)/(1000 * 60 * 60 * 24)))
+                //End date is not before start and it is same day, is not today, not further than 7 days
             }
+
             for (var i = 0; i < target_service.workingHours[0].days.length; i++) {
                 new_days_arr.push(target_service.workingHours[0].days[i].slice(0,3))
             }
+
             for (var i = 0; i < new_days_arr.length; i++) {
                 if(str_startDate.slice(0,3)===new_days_arr[i]&&str_endDate.slice(0,3)===new_days_arr[i]){
                     checkValidSum++
                     console.log(checkValidSum)
                 }
             }
+            //Check if day is in serviceDays
+
             if(parseInt(str_startDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))&&parseInt(str_startDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))){
+                //start time is between service hours, end time is between service hours
                 if(parseInt(str_startDate.slice(16,18))===parseInt(target_service.workingHours[0].startTime.slice(0,2))){
                     if(parseInt(str_startDate.slice(19,21))>=parseInt(target_service.workingHours[0].startTime.slice(-2))){
                     } else {
                         checkValidSum=checkValidSum-1
+                        //if start time = start time, check minutes higher
                     }
                 }
                 if(parseInt(str_endDate.slice(16,18))===parseInt(target_service.workingHours[0].endTime.slice(0,2))){
                     if(parseInt(str_endDate.slice(19,21))<=parseInt(target_service.workingHours[0].endTime.slice(-2))){
                     } else {
                         checkValidSum=checkValidSum-1
+                        //if end time = end time, check minutes lower
                     }
                 }
                 checkValidSum++//check if hour is within available service working hour
                 console.log(checkValidSum)
             }
         }
+
         if(checkValidSum!==6){
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
             event.preventDefault();

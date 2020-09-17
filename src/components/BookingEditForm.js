@@ -237,6 +237,7 @@ export default class BookingEditForm extends Component {
              body: JSON.stringify(new_obj_1)
             })
             alert("Your booking is updated.")
+            this.props.history.push('/booking/'+this.props.match.params.id)
             event.preventDefault();
         }
     }
