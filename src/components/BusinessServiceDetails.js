@@ -165,9 +165,9 @@ export default class BusinessServiceDetails extends Component {
                 let bookEnd = (new Date(booking.endDateTime))
                 let bookTitle = ''
                 if (booking.customer != null) {
-                    let bookTitle = 'By ' + booking.customer.username + ' | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                    bookTitle = 'By ' + booking.customer.username + ' | Notes: ' + booking.notes + ' | Status: ' + booking.status
                 } else {
-                    let bookTitle = 'By NULL | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                    bookTitle = 'By NULL | Notes: ' + booking.notes + ' | Status: ' + booking.status
                 }
                 
                 
